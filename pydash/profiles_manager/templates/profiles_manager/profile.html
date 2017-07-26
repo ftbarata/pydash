@@ -1,0 +1,36 @@
+{% extends 'profiles_manager/base.html' %}
+
+{% block content %}
+
+{{ status_message }}
+{{ errors }}
+<form enctype="multipart/form-data" method="post" action="{% url 'profile-view' %}">
+    {% csrf_token %}
+    {% if user.is_authenticated %}
+        {% if form.photo %}
+            <img src="{{ form.instance.photo.url }}" height="120">
+            <p>{{ form.photo }}</p>
+        {% endif %}
+    {% else %}
+        {% if form.photo %}
+            <img src="{{ form.instance.photo.url }}" height="120">
+        {% endif %}
+    {% endif %}
+    <p>{{ form.username }}{{form.username.label}}</p>
+    <p>{{ form.lotacao }}{{form.lotacao.label}}</p>
+    <p>{{ form.email }}{{form.email.label}}</p>
+    <p>{{ form.phone }} {{form.phone.label}}</p>
+    <p>{% if user.is_authenticated %}</p>
+        {{ form.description }} {{form.description.label}}
+        <p><input type="submit" value="Atualizar" /></p>
+    {% else %}
+    <p><input type="text" value="{{ form.description.value }}" readonly>{{form.description.label}}</p>
+    {% endif %}
+</form>
+
+{% if user.is_authenticated %}
+    <a href="{% url 'home' %}"><font color="red">Ir para a home.</font></a>
+{% else %}
+<a href="{% url 'public_home' %}"><font color="red">Ir para a home.</font></a>
+{% endif %}
+{% endblock %}

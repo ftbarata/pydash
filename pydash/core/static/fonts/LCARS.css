@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'LCARS';
+    src: url('fonts/LCARS.eot');
+    src: url('fonts/LCARS.eot') format('embedded-opentype'),
+         url('fonts/LCARS.woff2') format('woff2'),
+         url('fonts/LCARS.woff') format('woff'),
+         url('fonts/LCARS.ttf') format('truetype'),
+         url('fonts/LCARS.svg#LCARS') format('svg');
+}

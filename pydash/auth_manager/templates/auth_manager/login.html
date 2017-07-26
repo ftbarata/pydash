@@ -1,0 +1,48 @@
+{%load static%}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<link rel="shortcut icon" href="{% static 'favicon.ico' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'main_OceanFive.css' %}">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+</head>
+        <body>
+		<div id="titulo">
+			<a href="{% url 'public_home' %}"><img src="{% static 'img/logo.svg' %}"  height="50px" alt="ConabDash" id="logo_conab"></a>
+			<span id="menuSelector">&#9776;</span>
+		</div>
+
+		<div id="base_conteudo">
+			<div id="newStatusMessages" >
+                {{ status_message }}
+			<form action="{% url 'login' %}" id="loginForm" method="post">
+                {% csrf_token %}
+  			    <div class="group">
+  			      <input class="formText" type="text" name="username" required>
+  			      <span  class="highlight"></span>
+  			      <span  class="bar"></span>
+  			      <label class="textLabel" >Usuário</label>
+  			    </div>
+
+  			    <div class="group">
+  			      <input class="formText" type="password" name="password" required>
+  			      <span  class="highlight"></span>
+  			      <span  class="bar"></span>
+  			      <label class="textLabel" >Senha</label>
+  			    </div>
+
+  			    <div class="groupSubmit">
+			        <button type="submit" class="subButtonOK"   name="login_button" value="ok"   form="loginForm" >Login </button>
+			        <!--<button type="submit" class="subButtonFail" name="classificacao" value="fail" form="newMessage" >Falha  </button>-->
+			        <!--<button type="submit" class="subButtonDown" name="classificacao" value="down" form="newMessage" >Crítico</button>-->
+  			    </div>
+			</form>
+			</div>
+		</div>
+
+
+</body></html>

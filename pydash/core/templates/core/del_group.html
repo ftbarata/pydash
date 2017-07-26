@@ -1,0 +1,27 @@
+{% extends "core/base.html" %}
+
+{% block statusmessages %}
+
+		<div id="base_conteudo">
+			<div id="newStatusMessages" >
+			<form action="{% url 'del_group' %}" id="delGroup" method="post" >
+            {% csrf_token %}
+            <div class="group">
+                  {{message_form.message.errors}}
+                  <label for="delGroup"></label>
+  			      <span  class="highlight"></span>
+  			      <span  class="bar"></span>
+            </div>
+
+              <p>Grupos:</p>
+               {{ group_form.groups }}
+
+  			    <div class="groupSubmit">
+			        <button type="submit" class="subButtonOK"   name="severity" value="baixa"   form="delGroup" >Remover selecionados</button>
+  			    </div>
+			</form>
+			</div>
+		</div>
+
+
+{% endblock %}

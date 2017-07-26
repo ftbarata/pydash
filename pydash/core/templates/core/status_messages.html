@@ -1,0 +1,28 @@
+{% extends "core/base.html" %}
+{%load static%}
+
+{% block statusmessages %}
+
+{% if user.is_authenticated %}
+    {% for i in items %}
+        <div class="messagebox">
+            <div class="messagetext">{{i.message}}</div>
+            <div class="messagetext">{{i.detailed_message}}</div>
+            {% url 'delete_message' id=i.id as del_url %}
+            <div class={{i.header_class}}><a class="delButton" title="Remover Mensagem" href="{{del_url}}">Remover Mensagem</a><a href="{% url 'profile-view' username=i.username %}">{{i.header}}</a></div>
+        </div>
+    {% empty %}
+        <div class="messagetext">Nada a exibir.</div>
+    {% endfor %}
+{% else %}
+    {% for i in items %}
+        <div class="messagebox">
+            <div class="messagetext">{{i.message}}</div>
+            {% url 'delete_message' id=i.id as del_url %}
+            <div class={{i.header_class}}><a href="{% url 'profile-view' username=i.username %}">{{i.header}}</a></div>
+        </div>
+    {% empty %}
+        <div class="messagetext">Nada a exibir.</div>
+    {% endfor %}
+{% endif %}
+{% endblock %}

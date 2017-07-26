@@ -1,0 +1,42 @@
+{% extends "core/base.html" %}
+
+{% block statusmessages %}
+		{{ message_saved }}
+		<div id="base_conteudo">
+			<div id="newStatusMessages" >
+			<form action="{% url 'add_message' %}" id="newMessage" method="post" >
+            {% csrf_token %}
+            {{ message_form.non_field_errors }}
+            {{ group_form.non_field_errors }}
+            <div class="group">
+                  {{message_form.message.errors}}
+	 <div class="group">      
+        <textarea name="message" class="formText"></textarea>
+  	    <span class="highlight"></span>
+  	    <span class="bar"></span>
+  	    <label class="textLabel">Descrição do Evento</label>
+  	</div>
+
+    <div class="group">
+        <textarea name="detailed_message" class="formText"></textarea>
+        <span class="highlight"></span>
+        <span class="bar"></span>
+        <label class="textLabel">Descrição técnica detalhada do evento</label>
+    </div>
+            </div>
+
+            <p>Grupos:</p>
+               {{ group_form.groups }}
+
+
+  			    <div class="groupSubmit">
+			        <button type="submit" class="subButtonOK"   name="severity" value="baixa" form="newMessage" >Normal </button>
+			        <button type="submit" class="subButtonFail" name="severity" value="media" form="newMessage" >Falha  </button>
+			        <button type="submit" class="subButtonDown" name="severity" value="alta" form="newMessage" >Crítico</button>
+  			    </div>
+			</form>
+			</div>
+		</div>
+
+
+{% endblock %}

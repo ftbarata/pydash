@@ -1,0 +1,26 @@
+{% extends "core/base.html" %}
+
+{% block statusmessages %}
+{{ group_created_message }}
+		<div id="base_conteudo">
+			<div id="newStatusMessages" >
+                Criar grupo
+			<form action="{% url 'add_group' %}" id="newMessage" method="post" >
+            {% csrf_token %}
+            <div class="group">
+                  <label for="groupadd"></label>
+  			      <input class="formText" name="group_name" id="groupadd" required>
+  			      <span  class="highlight"></span>
+  			      <span  class="bar"></span>
+  			      <label class="textLabel">Nome:</label>
+				  <input type="hidden" name="username" value="{{ user.username }}">
+            </div>
+  			    <div class="groupSubmit">
+			        <button type="submit" class="subButtonOK"   name="severity" value="baixa"  form="newMessage" >Criar</button>
+  			    </div>
+			</form>
+			</div>
+		</div>
+
+
+{% endblock %}

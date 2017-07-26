@@ -1,0 +1,533 @@
+/* CSS Document */
+@font-face {
+  font-family: 'Yanone Kaffeesatz';
+  font-style: normal;
+  font-weight: 400;
+  src: url('fonts/yanone-kaffeesatz-v7-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Yanone Kaffeesatz Regular'), local('YanoneKaffeesatz-Regular'),
+       url('fonts/yanone-kaffeesatz-v7-latin-regular.eot?#iefix') format('embedded-opentype'), 
+       url('fonts/yanone-kaffeesatz-v7-latin-regular.woff2') format('woff2'), 
+       url('fonts/yanone-kaffeesatz-v7-latin-regular.woff') format('woff'), 
+       url('fonts/yanone-kaffeesatz-v7-latin-regular.ttf') format('truetype'), 
+       url('fonts/yanone-kaffeesatz-v7-latin-regular.svg#YanoneKaffeesatz') format('svg'); 
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url('css/roboto-v15-latin_latin-ext-regular.eot'); /* IE9 Compat Modes */
+  src: local('Roboto'), local('Roboto-Regular'),
+       url('fonts/roboto-v15-latin_latin-ext-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('fonts/roboto-v15-latin_latin-ext-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('fonts/roboto-v15-latin_latin-ext-regular.woff') format('woff'), /* Modern Browsers */
+       url('fonts/roboto-v15-latin_latin-ext-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('fonts/roboto-v15-latin_latin-ext-regular.svg#Roboto') format('svg'); /* Legacy iOS */
+}	
+
+body{
+	font-family:Roboto, Verdana, Arial, Helvetica, sans-serif;
+	margin:0px;
+	padding:0px;
+	background: #e7e7e7;
+	/* background-color:#FAFAFA; */
+	font-size:15px;
+	overflow-y: hidden;
+	overflow-x: hidden;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+
+}
+
+#logo_conab {
+	position: relative;
+	top: 5px;
+	left: 5px;
+	vertical-align: middle;
+}
+
+
+/* Titulo */
+#titulo{
+	height:60px;
+	background-color:#4c4c4c;
+	color:#FFFFFF;
+	font-size:23pt;
+	font-family: "Roboto", "Arial", sans-serif;
+	color:#FFFFFF;
+	position: fixed;
+	width: 100%;
+	z-index: 2;
+}
+
+#base_conteudo {
+	position: absolute;
+	top: 60px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	overflow-y: hidden;
+}
+
+
+
+p.msgOrientacao, p.msgErro{
+	margin:0px 50px;
+	text-align:left;
+	padding:10px 0px 0px 25px;
+	font-weight:bold;
+	background-repeat:no-repeat;
+	background-position:2px 10px;
+
+}
+	
+div.messageheader {
+	padding:5px 5px;
+	margin:0px;
+	background-color:#00A0B0;
+	color:#FFFFFF;
+	font-size:14px;
+	text-align: right;
+}
+
+div.messageheaderAlert {
+	padding:5px 5px;
+	margin:0px;
+	background-color:#CC333F;
+	color:#FFFFFF;
+	font-size:14px;
+	text-align: right;
+}
+
+div.messageheaderFail {
+	padding:5px 5px;
+	margin:0px;
+	background-color:#EB6841;
+	color:#FFFFFF;
+	font-size:14px;
+	text-align: right;
+}
+
+.messagetext {
+	padding:10px 10px;
+	margin:0px;
+	background-color:#FFFFFF;
+	color:#000000;
+	font-size:18px;
+	font-family: Roboto, Helvetica, sans-serif;
+}
+
+div.messagebox {
+	padding:0px 0px;
+	background-color:#E4E4E4;
+	color:#000000;
+	font-size:18px;
+	font-family: Roboto, Helvetica, sans-serif;
+	/*width: 60%;*/
+	width: 90%;
+	vertical-align:middle;
+	display:block;
+	margin: auto; 
+	margin-top: 15px;
+	margin-bottom: 15px;
+	/*margin: 40px 10px 10px 10px; */
+
+        -webkit-box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.5);
+           -moz-box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.5);
+                box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.5);
+}
+
+
+.innerTitle{
+	color: #48A942;
+	font-size: 22px;
+}	
+
+
+#StatusPanel {
+	width: 20%;
+	height: 100%;
+	float: left !important;
+	/*background-color:#01579b;*/
+	background-color: #4c4c4c;
+	transition: 0.5s;
+	/*background-color: #fff;*/
+	/*padding-left: 1%;*/
+}
+
+#StatusMessages {
+	width: 80%;
+	height: calc(100% - 60px);
+	float: right !important;
+	overflow-y: scroll;
+	/*background-color: #fff;*/
+	/*padding-left: 1%;*/
+}
+
+#newStatusMessages{
+	width: 500px;
+	float: right !important;
+	margin-top: 40px;
+	margin-right: 30%;
+	/*background-color: #fff;*/
+	/*padding-left: 1%;*/
+}
+
+
+.group{ 
+	position:relative; 
+	margin-bottom:45px; 
+}
+.formText, input.formText{
+	font-size:18px;
+	padding:10px 10px 10px 5px;
+	display:block;
+	width: 500px;
+	border:none;
+	border-bottom:1px solid #4c4c4c;
+	background-color: inherit;
+	resize:vertical;
+}
+
+.formText, input.formText:focus{ 
+	outline:none;
+}
+
+
+button{
+	/*padding: 5px 100px 5px 10px;*/
+	/*width: 100px;*/
+
+	color: #FFFFFF;
+	padding: 1px 10px;
+	border-style: solid;
+	border-color: #999999;
+	border-width: 0px 0px 0px 0px;
+	margin: 10px 5px;
+	border-radius: 2px;
+	/*border: medium none;*/
+	/*background-color: #0277bd;*/
+	height: 40px;
+	outline: medium none;
+	padding: 10 16px;
+	position: relative;
+	text-align: left;
+	/*text-align: center;*/
+	text-decoration: none;
+	text-transform: uppercase;
+	vertical-align: middle;
+	will-change: box-shadow;
+	font-size:18px;
+	align: right;
+	-webkit-box-shadow: 2px 3px 2px 0px rgba(71,71,71,0.5);
+	-moz-box-shadow: 2px 3px 2px 0px rgba(71,71,71,0.5);
+	box-shadow: 2px 3px 2px 0px rgba(71,71,71,0.5);
+	opacity: 0.8;
+	transition: 0.5s ease all;
+}
+
+button.subButtonOK{
+    background-color: #00A0B0;
+}
+
+button.subButtonFail{
+    background-color: #EB6841;
+}
+
+button.subButtonDown{
+    background-color: #CC333F;
+}
+
+button:hover, button:active {
+    opacity: 1.0;
+    border-color: #fff;
+    border-width: 0px 0px 4px 0px;
+}
+
+.groupSubmit {
+	margin: auto;
+}
+
+
+label.textLabel {
+  color:#999; 
+  font-size:18px;
+  font-weight:normal;
+  position:absolute;
+  pointer-events:none;
+  left:5px;
+  top:10px;
+  transition:0.2s ease all; 
+}
+
+/* active state */
+.formText:focus ~ label.textLabel, input.formText:focus ~ label.textLabel, .formText:valid ~label.textLabel input.formText:valid ~ label.textLabel     {
+  top:-20px;
+  font-size:14px;
+  color:#00A0B0;
+}
+
+.bar  { 
+	position: relative; 
+	display: block; 
+	width: 500px; 
+}
+
+.bar:before, .bar:after   {
+  content:'';
+  height:4px; 
+  width:0;
+  bottom:1px; 
+  position:absolute;
+  background:#00A0B0; 
+  transition:0.2s ease all; 
+}
+.bar:before {
+  left:50%;
+}
+.bar:after {
+  right:50%; 
+}
+
+/* active state */
+input.formText:focus ~ .bar:before, input.formText:focus ~ .bar:after {
+  width:50%;
+}
+
+.formText:focus ~ .bar:before, .formText:focus ~ .bar:after {
+  width:50%;
+}
+
+.statusLine {
+	text-align: middle;
+	vertical-align:middle;
+	color:#c4c4c4;
+	font-size:18px;
+	font-family: Roboto, Helvetica, sans-serif;
+}
+
+ul {
+	list-style: none;
+	line-height: 1em;
+	font-size: 2vw;
+	color: #ffffff;
+	padding-left: 10px;
+	padding-right: 10px;
+	-moz-padding-start: 10px;
+}
+
+ul li {
+	display: block;
+	/*padding: 5px 100px 5px 10px;*/
+
+	color: #FFFFFF;
+	padding: 1px 10px;
+	border-style: solid;
+	border-color: #999999;
+	border-width: 0px 0px 0px 0px;
+	margin: 10px 5px;
+	border-radius: 2px;
+	/*border: medium none;*/
+	/*background-color: #0277bd;
+	height: 30px;*/
+	height: 2vw;
+	outline: medium none;
+	padding: 10 16px;
+	position: relative;
+	text-align: left;
+	/*text-align: center;*/
+	text-decoration: none;
+	text-transform: uppercase;
+	vertical-align: middle;
+	will-change: box-shadow;
+	font-size:22px;
+	align: right;
+	-webkit-box-shadow: 2px 3px 2px 0px rgba(71,71,71,0.5);
+	-moz-box-shadow: 2px 3px 2px 0px rgba(71,71,71,0.5);
+	box-shadow: 2px 3px 2px 0px rgba(71,71,71,0.5);
+	opacity: 0.8;
+	font-family: "Yanone Kaffeesatz";
+	transition: 0.5s ease all;
+}
+
+ul li:hover, li:active {
+    opacity: 1.0;
+    border-color: #fff;
+    border-width: 0px 00px 0px 10px;
+}
+
+ul li.down{
+    background-color: #CC333F;
+}
+
+ul li.fail{
+    background-color: #EB6841;
+}
+
+ul li.ok{
+    background-color: #00A0B0;
+}
+
+#id_name {
+	width: 100%;
+	background: #e7e7e7;
+	border-style: none;
+}
+
+option{
+	opacity: 0.5;	
+	font-size:18px;
+	padding:10px 10px 10px 5px;
+	display:block;
+	width: 500px;
+	border:none;
+	background-color: inherit;
+	resize:vertical;
+}
+
+option:active{
+	background-color: #0277bd;
+	opacity: 1.0;	
+}
+
+option:hover{
+	opacity: 1.0;	
+}
+
+#menuSelector{
+	float: right;
+	padding-right: 20px;
+	padding-top: 20px;
+	cursor: default;
+	font-size: 0.6em;
+	font-family: "Yanone Kaffeesatz";
+}
+
+.topMenuButton {
+	color: #FFFFFF;
+	background-color: #2c2c2c;
+	border-radius: 2px;
+	position: relative;
+	text-align: left;
+	text-decoration: none;
+	vertical-align: middle;
+	width: 165px;
+	height: 100%;
+}
+
+#topMenu {
+	/*
+	position: absolute;
+	right: 5px;
+	top: 65px;
+	*/
+	display:inline;
+}
+
+.topMenuLink{
+	/*display: block;*/
+	padding-right: 5px;
+	padding-left: 5px;
+	color: #FFFFFF;
+	padding: 1px 10px;
+	border-style: solid;
+	border-color: #999999;
+	border-width: 0px 0px 0px 0px;
+	margin: 10px 5px;
+	border-radius: 2px;
+	background-color: #0277bd;
+	outline: medium none;
+	padding: 5 10px;
+	position: relative;
+	text-align: left;
+	text-decoration: none;
+	vertical-align: middle;
+	-webkit-box-shadow: 2px 3px 2px 0px rgba(71,71,71,0.5);
+	-moz-box-shadow: 2px 3px 2px 0px rgba(71,71,71,0.5);
+	box-shadow: 2px 3px 2px 0px rgba(71,71,71,0.5);
+	opacity: 0.8;
+	font-family: "Yanone Kaffeesatz";
+	transition: 0.5s ease all;
+
+}
+
+.topMenuLink:hover{
+	opacity: 1.0;
+}
+
+.eventCount{
+	padding-right: 5px;
+	padding-left: 5px;
+	background-color: #000000;
+	color: #FFFFFF;
+	border-style: solid;
+	border-color: #999999;
+	border-width: 0px 0px 0px 0px;
+	margin: 5px 5px;
+	border-radius: 2px;
+	outline: medium none;
+	position: relative;
+	text-align: left;
+	text-decoration: none;
+	vertical-align: middle;
+	-webkit-box-shadow: 2px 3px 2px 0px rgba(71,71,71,0.5);
+	-moz-box-shadow: 2px 3px 2px 0px rgba(71,71,71,0.5);
+	box-shadow: 2px 3px 2px 0px rgba(71,71,71,0.5);
+	font-family: "Yanone Kaffeesatz";
+	vertical-align: middle;
+}
+
+.delButton{
+	float:left;
+	text-decoration: underline;
+}
+
+@media only screen and (max-width: 768px) {
+
+	#StatusPanel {
+		width: 0%;
+		height: 100%;
+		float: right !important;
+		overflow-x: hidden;
+		overflow-y: scroll;
+		transition: 0.5s;
+		/*background-color: #fff;*/
+		/*padding-left: 1%;*/
+	}
+
+	#StatusMessages {
+		width: 100%;
+		/*height: 100%;*/
+		float: right !important;
+		overflow-y: scroll;
+		/*background-color: #fff;*/
+		/*padding-left: 1%;*/
+	}
+
+	#menuSelector{
+		float: right;
+		display: inline;
+		cursor: default;
+	}
+
+	#base_conteudo {
+		position: absolute;
+		top: 60px;
+		left: 0px;
+		width: 100%;
+		/*height: 100%;*/
+		overflow-y: scroll;
+	}
+	ul li {
+		opacity: 1.0;
+	}
+	ul li:active {
+	    opacity: 1.0;
+	    border-color: #fff;
+	    border-width: 0px 00px 0px 10px;
+	}
+
+}

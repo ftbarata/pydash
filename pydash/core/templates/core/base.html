@@ -1,0 +1,93 @@
+{%load static%}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ConabDash</title>
+
+
+<link rel="shortcut icon" href="{% static 'favicon.ico' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'main_OceanFive.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'font-awesome.css' %}">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+</head>
+        <body>
+		<div id="titulo">
+			<a href="{% url 'public_home' %}"><img src="{% static 'img/logo.svg' %}"  height="50px" alt="ConabDash" id="logo_conab"></a>
+            <span id="menuSelector">
+            {% if user.is_authenticated %}
+                {% if user.first_name %}
+                    Bem vindo {{user.first_name}}.
+                {% else %}
+                    Bem vindo {{user.username}}.
+                {% endif %}
+                <a class="topMenuLink" href="{% url 'home' %}">Home</a>
+                <a class="topMenuLink" href="{% url 'add_message' %}">Nova mensagem</a>
+                <a class="topMenuLink" href="{% url 'add_group' %}">Criar Grupo</a>
+                <a class="topMenuLink" href="{% url 'del_group' %}">Remover Grupo</a>
+		        <a class="topMenuLink" href="{% url 'logout' %}">Sair</a>
+            {% else %}
+                <a class="topMenuLink" href="{% url 'login' %}">Login</a>
+            {% endif %}
+            </span>
+
+        </div>
+        <div id="base_conteudo">
+            <div id="StatusPanel" >
+                <ul>
+                    {%for down in tuples_groupdownlist %}
+                    {% if down.2 %}
+                        {% url 'show_message' group=down.2 as downurl %}
+                    {% else %}
+                        {% url 'show_message' group=down.0 as downurl %}
+                    {% endif %}
+                    {% if down.1 %}
+                        <li class="down"><a href="{{downurl}}">{{down.0}} <span class="eventCount">{{down.1}}</span></a></li>
+                    {% else %}
+                        <li class="down"><a href="{{downurl}}">{{down.0}}</a></li>
+                    {% endif %}
+                    {% endfor %}
+
+                    {%for fail in tuples_groupfaillist %}
+                    {% if fail.2 %}
+                        {% url 'show_message' group=fail.2 as failurl %}
+                    {% else %}
+                        {% url 'show_message' group=fail.0 as failurl %}
+                    {% endif %}
+                    {% if fail.1 %}
+                        <li class="fail"><a href="{{failurl}}">{{fail.0}} <span class="eventCount">{{fail.1}}</span></a></li>
+                    {% else %}
+                        <li class="fail"><a href="{{failurl}}">{{fail.0}}</a></li>
+                    {% endif %}
+                    {% endfor %}
+
+                    {%for ok in tuples_groupoklist %}
+                    {% if ok.2 %}
+                        {% url 'show_message' group=ok.2 as okurl %}
+                    {% else %}
+                        {% url 'show_message' group=ok.0 as okurl %}
+                    {% endif %}
+                    {% if ok.1 %}
+                        <li class="ok"><a href="{{okurl}}">{{ok.0}} <span class="eventCount">{{ok.1}}</span></a></li>
+                    {% else %}
+                        <li class="ok"><a href="{{okurl}}">{{ok.0}}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+
+
+            <div id="StatusMessages" >
+                {{ status_message }}
+                {% block statusmessages %}
+
+                {% endblock %}
+
+            </div>
+
+        </div>
+
+</body></html>
+
