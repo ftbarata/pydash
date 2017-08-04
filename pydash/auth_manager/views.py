@@ -3,7 +3,6 @@ from django.contrib.auth.models import Group as UserGroup
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from pydash.core.views import _sidebar_groups, _show_messages
-from ..core.models import Message
 from ldap3 import Server, Connection, ALL
 from django.conf import settings
 

@@ -9,11 +9,23 @@ from django.contrib.sessions.models import Session
 
 
 def profile_view(request, username=''):
-    if not username:
+    if request.session.session_key is not None:
         session_id = request.session.session_key
         session = Session.objects.get(session_key=session_id)
         uid = session.get_decoded().get('_auth_user_id')
-        username = User.objects.get(pk=uid)
+        username_session = User.objects.get(pk=uid)
+    else:
+        username_session = None
+
+    print('username: {}, session: {}'.format(username, username_session))
+    if str(username_session) == username:
+        can_edit_profile = True
+    else:
+        can_edit_profile = False
+
+    if not username:
+        can_edit_profile = True
+        username = username_session
     ldap_attrs = _get_ldap_user_attrs_as_dict_of_lists(username, ['telephoneNumber', 'l', 'mail'])
     mail = ldap_attrs['mail'][0]
     phone = ldap_attrs['telephoneNumber'][0]
@@ -53,9 +65,9 @@ def profile_view(request, username=''):
                 updated_form = ProfileForm(instance=UserProfile.objects.get(username=username))
                 return render(request, 'profiles_manager/profile.html',{'status_message': 'Perfil atualizado.', 'form': updated_form})
             else:
-                print(form.errors)
                 return render(request, 'profiles_manager/profile.html', {'status_message': 'Erro.', 'form': form, 'errors': form.errors.as_data()})
         else:
             return render(request, 'profiles_manager/profile.html', {'status_message': 'Permissão negada. Você não está autenticado.', 'form': form, 'errors': form.errors.as_data()})
     else:
-        return render(request, 'profiles_manager/profile.html', {'form': form })
+        print(can_edit_profile)
+        return render(request, 'profiles_manager/profile.html', {'form': form, 'can_edit_profile': can_edit_profile })

@@ -4,33 +4,41 @@
 
 {{ status_message }}
 {{ errors }}
-<form enctype="multipart/form-data" method="post" action="{% url 'profile-view' %}">
-    {% csrf_token %}
-    {% if user.is_authenticated %}
-        {% if form.photo %}
-            <img src="{{ form.instance.photo.url }}" height="120">
-            <p>{{ form.photo }}</p>
-        {% endif %}
-    {% else %}
-        {% if form.photo %}
-            <img src="{{ form.instance.photo.url }}" height="120">
-        {% endif %}
-    {% endif %}
-    <p>{{ form.username }}{{form.username.label}}</p>
-    <p>{{ form.lotacao }}{{form.lotacao.label}}</p>
-    <p>{{ form.email }}{{form.email.label}}</p>
-    <p>{{ form.phone }} {{form.phone.label}}</p>
-    <p>{% if user.is_authenticated %}</p>
-        {{ form.description }} {{form.description.label}}
-        <p><input type="submit" value="Atualizar" /></p>
-    {% else %}
-    <p><input type="text" value="{{ form.description.value }}" readonly>{{form.description.label}}</p>
-    {% endif %}
-</form>
+<div id="base_conteudo">
+    <div id="newStatusMessages" >
+        <form enctype="multipart/form-data" id="profile_form" method="post" action="{% url 'profile-view' %}">
+            {% csrf_token %}
+            {% if user.is_authenticated and can_edit_profile %}
+                {% if form.photo %}
+                    <img src="{{ form.instance.photo.url }}" height="120">
+                    <p>{{ form.photo }}</p>
+                {% endif %}
+            {% else %}
+                {% if form.photo %}
+                    <img src="{{ form.instance.photo.url }}" height="120">
+                {% endif %}
+            {% endif %}
+            <p>{{ form.username }}{{form.username.label}}</p>
+            <p>{{ form.lotacao }}{{form.lotacao.label}}</p>
+            <p>{{ form.email }}{{form.email.label}}</p>
+            <p>{{ form.phone }} {{form.phone.label}}</p>
 
-{% if user.is_authenticated %}
-    <a href="{% url 'home' %}"><font color="red">Ir para a home.</font></a>
-{% else %}
-<a href="{% url 'public_home' %}"><font color="red">Ir para a home.</font></a>
+            {% if user.is_authenticated and can_edit_profile %}
+
+                {{ form.description }} {{form.description.label}}
+                <p><input type="submit" value="Atualizar" /></p>
+            {% else %}
+                <p><input type="text" value="{{ form.description.value }}" readonly>{{form.description.label}}</p>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+<div class="groupSubmit">
+    {% if user.is_authenticated %}
+        <a href="{% url 'home' %}"><button type="button" class="subButtonOK"   name="severity" value="baixa" form="profile_form" >Voltar para a home</button></a>
+    {% else %}
+        <a href="{% url 'public_home' %}"><button type="button" class="subButtonOK"   name="severity" value="baixa" form="profile_form" >Voltar para a home</button></a>
+</div>
 {% endif %}
 {% endblock %}

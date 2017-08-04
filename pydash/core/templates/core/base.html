@@ -27,6 +27,7 @@
                 <a class="topMenuLink" href="{% url 'add_message' %}">Nova mensagem</a>
                 <a class="topMenuLink" href="{% url 'add_group' %}">Criar Grupo</a>
                 <a class="topMenuLink" href="{% url 'del_group' %}">Remover Grupo</a>
+                <a class="topMenuLink" href="{% url 'profile-view' username=i.username %}">Editar perfil</a>
 		        <a class="topMenuLink" href="{% url 'logout' %}">Sair</a>
             {% else %}
                 <a class="topMenuLink" href="{% url 'login' %}">Login</a>
