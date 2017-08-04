@@ -3,7 +3,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
@@ -112,10 +111,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/var/www/pydash/static/'
-MEDIA_ROOT = '/var/www/pydash/media/'
+STATIC_ROOT = BASE_DIR + '/' + 'static'
+MEDIA_ROOT = BASE_DIR + '/' + 'media'
 MEDIA_URL = '/media/'
-PROFILE_IMAGES_DIR_NAME = 'profile_images'
+UPLOAD_TO_PROFILE_MODEL_IMAGE_FIELD_NAME='profile_images'
+PROFILE_IMAGES_DIR_PATH = MEDIA_ROOT + '/' + UPLOAD_TO_PROFILE_MODEL_IMAGE_FIELD_NAME
 DEFAULT_IMAGE_FILENAME = 'default.jpg'
 
 # ldap3
