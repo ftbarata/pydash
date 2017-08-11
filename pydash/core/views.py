@@ -297,7 +297,7 @@ def add_group_view(request):
             if request.session['is_admin']:
                 if request.method == 'POST':
                     group_name = request.POST['group_name']
-                    Group.objects.create(name=group_name)
+                    Group.objects.create(name=group_name.replace('.', ''))
                     sidebar_context_groups = _sidebar_groups()
                     sidebar_context_groups.update({'group_created_message': 'Grupo {} criado.'.format(group_name)})
                     return render(request, 'core/new_group.html', sidebar_context_groups)
