@@ -8,7 +8,7 @@
     <div id="newStatusMessages" >
         <form enctype="multipart/form-data" id="profile_form" method="post" action="{% url 'profile-view' %}">
             {% csrf_token %}
-            {% if user.is_authenticated and can_edit_profile %}
+            {% if user.is_authenticated and request.session.can_edit_profile %}
                 {% if form.photo %}
                     <img src="{{ form.instance.photo.url }}" height="120">
                     <p>{{ form.photo }}</p>
@@ -23,12 +23,19 @@
             <p>{{ form.email }}{{form.email.label}}</p>
             <p>{{ form.phone }} {{form.phone.label}}</p>
 
-            {% if user.is_authenticated and can_edit_profile %}
-
-                {{ form.description }} {{form.description.label}}
+            {% if user.is_authenticated and request.session.can_edit_profile %}
+                <p>{{ form.description }} {{form.description.label}}</p>
+                <p>{{ form.notification_groups }} {{ form.notification_groups.label }}</p>
                 <p><input type="submit" value="Atualizar" /></p>
             {% else %}
-                <p><input type="text" value="{{ form.description.value }}" readonly>{{form.description.label}}</p>
+                <p><input type="textarea" value="{{ form.description.value }}" readonly>{{form.description.label}}</p>
+                {% for i in form.notification_groups %}
+                    <ul>
+                        {{i}}
+                    </ul>
+                {% endfor %}
+            {{ form.notification_groups.label }}
+            {{ is_admin }}
             {% endif %}
         </form>
     </div>
@@ -36,9 +43,13 @@
 
 <div class="groupSubmit">
     {% if user.is_authenticated %}
-        <a href="{% url 'home' %}"><button type="button" class="subButtonOK"   name="severity" value="baixa" form="profile_form" >Voltar para a home</button></a>
+        {% if request.session.is_admin %}
+            <a href="{% url 'home' %}"><button type="button" class="subButtonOK"   name="severity" value="baixa" form="profile_form" >Voltar para a home</button></a>
+        {% else %}
+            <a href="{% url 'public_home' %}"><button type="button" class="subButtonOK"   name="severity" value="baixa" form="profile_form" >Voltar para a home</button></a>
+        {% endif %}
     {% else %}
         <a href="{% url 'public_home' %}"><button type="button" class="subButtonOK"   name="severity" value="baixa" form="profile_form" >Voltar para a home</button></a>
+    {% endif %}
 </div>
-{% endif %}
 {% endblock %}

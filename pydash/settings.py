@@ -7,7 +7,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '&5i+=nqnpm78io&h$#7wjw7$5b1!w^em=r!mpjrp7*o8gkwz5t'
+SECRET_KEY = '****'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -25,9 +25,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'pydash.core',
+    'pydash.core.apps.CoreConfig',
+    'pydash.mail_notifications',
     'pydash.auth_manager',
-    'pydash.profiles_manager',
+    'pydash.profiles_manager.apps.ProfilesManagerConfig'
 ]
 
 MIDDLEWARE = [
@@ -98,7 +99,7 @@ AUTHENTICATION_BACKENDS = ['django_python3_ldap.auth.LDAPBackend', 'django.contr
 
 LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
@@ -123,8 +124,8 @@ LDAP_SERVER = 'ldap.conab.gov.br'
 LDAP_SEARCH_BASE = 'ou=usuarios,dc=matriz,dc=conab,dc=gov,dc=br'
 
 # DJANGO-PYTHON3-LDAP
-LDAP_AUTH_URL = "ldap://ldap.conab.gov.br:389"
-LDAP_AUTH_SEARCH_BASE = "ou=usuarios,dc=matriz,dc=conab,dc=gov,dc=br"
+LDAP_AUTH_URL = "ldap://ldap.example.com.br:389"
+LDAP_AUTH_SEARCH_BASE = "ou=usuarios,dc=matriz,dc=example,dc=com,dc=br"
 
 LDAP_AUTH_USER_FIELDS = {
     "username": "uid",
@@ -132,3 +133,9 @@ LDAP_AUTH_USER_FIELDS = {
     "last_name": "sn",
     "email": "mail",
 }
+
+# MAIL SETTINGS
+EMAIL_USE_SSL = False
+EMAIL_PORT = 25
+EMAIL_HOST = 'mail.example.com.br'
+DEFAULT_FROM_EMAIL = 'dashboard@example.com.br'

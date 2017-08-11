@@ -2,4 +2,6 @@ from django.apps import AppConfig
 
 
 class ProfilesManagerConfig(AppConfig):
-    name = 'profiles_manager'
+    name = 'pydash.profiles_manager'
+    verbose_name = 'Gerenciamento de Perfis'
+

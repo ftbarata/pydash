@@ -4,13 +4,16 @@ from django import forms
 
 
 class ProfileForm(models.ModelForm):
+
     class Meta:
+
         model = UserProfile
         fields = '__all__'
         widgets={
-        'username': forms.TextInput(attrs={'readonly':'readonly'}),
-        'lotacao': forms.TextInput(attrs={'readonly': 'readonly'}),
-        'email': forms.TextInput(attrs={'readonly': 'readonly', 'size': '50'}),
-        'phone': forms.TextInput(attrs={'readonly': 'readonly'}),
-        'description': forms.Textarea()
+            'username': forms.TextInput(attrs={'readonly':'readonly'}),
+            'lotacao': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'email': forms.TextInput(attrs={'readonly': 'readonly', 'size': '50'}),
+            'phone': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'description': forms.Textarea(),
+            'notification_groups': forms.CheckboxSelectMultiple()
         }

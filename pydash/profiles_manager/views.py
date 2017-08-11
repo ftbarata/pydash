@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.contrib.auth.models import Group as UserGroup
 import os
 from django.conf import settings
 from django.shortcuts import render
@@ -9,26 +10,35 @@ from django.contrib.sessions.models import Session
 
 
 def profile_view(request, username=''):
+    username_session = None
     if request.session.session_key is not None:
         session_id = request.session.session_key
         session = Session.objects.get(session_key=session_id)
         uid = session.get_decoded().get('_auth_user_id')
-        username_session = User.objects.get(pk=uid)
-    else:
-        username_session = None
+        if User.objects.filter(pk=uid).exists():
+            username_session = User.objects.get(pk=uid)
+        else:
+            username_session = None
 
     if str(username_session) == username:
-        can_edit_profile = True
+        request.session['can_edit_profile'] = True
     else:
-        can_edit_profile = False
+        request.session['can_edit_profile'] = False
 
     if not username:
-        can_edit_profile = True
+        request.session['can_edit_profile'] = True
         username = str(username_session)
+
     ldap_attrs = _get_ldap_user_attrs_as_dict_of_lists(username, ['telephoneNumber', 'l', 'mail'])
-    mail = ldap_attrs['mail'][0]
-    phone = ldap_attrs['telephoneNumber'][0]
-    lotacao = ldap_attrs['l'][0]
+    if ldap_attrs is None:
+        mail = 'usuario_removido'
+        phone = 'usuario_removido'
+        lotacao = 'usuario_removido'
+    else:
+        mail = ldap_attrs['mail'][0]
+        phone = ldap_attrs['telephoneNumber'][0]
+        lotacao = ldap_attrs['l'][0]
+
     if UserProfile.objects.filter(username=username).exists():
         form = ProfileForm(instance=UserProfile.objects.get(username=username))
     else:
@@ -47,7 +57,7 @@ def profile_view(request, username=''):
                     if not str(current_photo).split('/')[1] == settings.DEFAULT_IMAGE_FILENAME:
                         os.remove(settings.MEDIA_ROOT + '/' + str(current_photo))
 
-                data = {'username': username, 'lotacao': lotacao, 'phone': phone, 'email': mail, 'description': request.POST['description'], 'photo': request.FILES['photo']}
+                data = {'username': username, 'lotacao': lotacao, 'phone': phone, 'email': mail, 'description': request.POST['description'], 'photo': request.FILES['photo'], 'notification_groups': request.POST.getlist('notification_groups')}
 
                 updated_form = ProfileForm(data, request.FILES,instance=UserProfile.objects.get(username=username))
                 if updated_form.is_valid():
@@ -69,19 +79,20 @@ def profile_view(request, username=''):
                         if os.path.isfile(settings.MEDIA_ROOT + '/' + str(current_photo)):
                             if not str(current_photo).split('/')[1] == settings.DEFAULT_IMAGE_FILENAME:
                                 os.remove(settings.MEDIA_ROOT + '/' + str(current_photo))
-                blank_photo = UserProfile.objects.get(username=username)
-                blank_photo.photo = settings.UPLOAD_TO_PROFILE_MODEL_IMAGE_FIELD_NAME + '/' + settings.DEFAULT_IMAGE_FILENAME
-                blank_photo.save()
-                data = {'username': username, 'lotacao': lotacao, 'phone': phone, 'email': mail,'description': request.POST['description']}
-                updated_form = ProfileForm(data, instance=UserProfile.objects.get(username=username))
 
+                        blank_photo = UserProfile.objects.get(username=username)
+                        blank_photo.photo = settings.UPLOAD_TO_PROFILE_MODEL_IMAGE_FIELD_NAME + '/' + settings.DEFAULT_IMAGE_FILENAME
+                        blank_photo.save()
+
+                data = {'username': username, 'lotacao': lotacao, 'phone': phone, 'email': mail,'description': request.POST['description'],'notification_groups': request.POST.getlist('notification_groups')}
+                updated_form = ProfileForm(data, instance=UserProfile.objects.get(username=username))
                 if updated_form.is_valid():
                     updated_form.save()
                     updated_form = ProfileForm(instance=UserProfile.objects.get(username=username))
                     return render(request, 'profiles_manager/profile.html',{'status_message': 'Perfil atualizado.', 'form': updated_form})
                 else:
-                    return render(request, 'profiles_manager/profile.html', {'status_message': 'Erro.', 'form': form, 'errors': form.errors.as_data()})
+                    return render(request, 'profiles_manager/profile.html', {'status_message': 'Erro.', 'form': form, 'errors': form.errors})
         else:
-            return render(request, 'profiles_manager/profile.html', {'status_message': 'Permissão negada. Você não está autenticado.', 'form': form, 'errors': form.errors.as_data()})
+            return render(request, 'profiles_manager/profile.html', {'status_message': 'Permissão negada. Você não está autenticado.', 'form': form, 'errors': form.errors})
     else:
-        return render(request, 'profiles_manager/profile.html', {'form': form, 'can_edit_profile': can_edit_profile })
+        return render(request, 'profiles_manager/profile.html', {'form': form, 'can_edit_profile': request.session['can_edit_profile']})
