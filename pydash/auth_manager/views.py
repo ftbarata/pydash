@@ -28,7 +28,11 @@ def login_user(request):
 
             if user is not None:
                 login(request, user)
-                user_lotacao = _get_ldap_user_attrs_as_dict_of_lists(user, ['l'])['l'][0]
+                if not _get_ldap_user_attrs_as_dict_of_lists(user) is None:
+                    user_lotacao = _get_ldap_user_attrs_as_dict_of_lists(user, ['l'])['l'][0]
+                else:
+                    user_lotacao = 'nogroup'
+
                 authorized_groups = UserGroup.objects.all()
                 for group in authorized_groups:
                     if str(group).upper() == str(user_lotacao).upper():
