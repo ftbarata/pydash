@@ -1,3 +1,7 @@
-<h3>Atenção</h3>
+{% if solved %}
+    <h3>A mensagem abaixo foi removida e, portanto, o problema foi resolvido.</h3>
+{% else %}
+    <h3>Atenção, a mensagem abaixo foi cadastrada:</h3>
+{% endif %}
 
 <h3>{{ message|linebreaks }}</h3>

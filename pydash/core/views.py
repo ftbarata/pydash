@@ -242,6 +242,43 @@ def delete_message_view(request, id):
             if request.session['is_admin']:
                 context = _show_messages(10)
                 if request.method == 'GET':
+                    session_id = request.session.session_key
+                    session = Session.objects.get(session_key=session_id)
+                    uid = session.get_decoded().get('_auth_user_id')
+                    user_from_session_id = User.objects.get(pk=uid)
+                    admin_groups = []
+                    for g in UserGroup.objects.all():
+                        admin_groups.append(str(g).upper())
+
+                    notification_groups_for_this_message = []
+                    for i in Message.objects.get(pk=id).group_set.all():
+                        notification_groups_for_this_message.append(str(i).upper())
+
+                    user_notifications_subscribed_groups = []
+                    for u in UserProfile.objects.get(username=user_from_session_id).notification_groups.all():
+                        user_notifications_subscribed_groups.append(str(u).upper())
+
+                    for user in UserProfile.objects.all():
+                        if user.notification_groups.all().exists():
+                            match = False
+                            for x in notification_groups_for_this_message:
+                                for y in user_notifications_subscribed_groups:
+                                    if x == y:
+                                        ldap_attrs = __get_ldap_user_attrs_as_dict_of_lists(user.username, ['l'])
+                                        lotacao = ldap_attrs['l'][0]
+
+                                        if str(lotacao).upper() in admin_groups:
+                                            message = 'Mensagem: {}\n\nMensagem detalhada: {}'.format(Message.objects.get(pk=id).message, Message.objects.get(pk=id).detailed_message)
+                                        else:
+                                            message = 'Mensagem: {}'.format(Message.objects.get(pk=id).message)
+
+                                        send_unique_email(subject='Resolvido', message=message, recipient=user.email, solved=True)
+                                        message = None
+                                        match = True
+                                        break
+                                if match:
+                                    break
+
                     Message.objects.all().get(pk=id).delete()
                     context = _show_messages(10)
                     context.update({'status_message': 'Mensagem removida.'})

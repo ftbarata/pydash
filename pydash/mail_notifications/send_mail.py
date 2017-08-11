@@ -3,10 +3,17 @@ from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives
 
 
-def send_unique_email(subject, message, recipient, template_for_html_message='mail_notifications/default.html'):
-    context = {
-        'message': message
-    }
+def send_unique_email(subject, message, recipient, template_for_html_message='mail_notifications/default.html', solved=False):
+    if solved:
+        context = {
+            'message': message,
+            'solved': True
+        }
+    else:
+        context = {
+            'message': message,
+        }
+
 
     subject = subject
     message = message
