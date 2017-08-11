@@ -36,7 +36,10 @@ def profile_view(request, username=''):
         lotacao = 'usuario_removido'
     else:
         mail = ldap_attrs['mail'][0]
-        phone = ldap_attrs['telephoneNumber'][0]
+        if ldap_attrs['telephoneNumber']:
+            phone = ldap_attrs['telephoneNumber'][0]
+        else:
+            phone = 'Não disponível'
         lotacao = ldap_attrs['l'][0]
 
     if UserProfile.objects.filter(username=username).exists():

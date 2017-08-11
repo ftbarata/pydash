@@ -209,12 +209,11 @@ def add_message_view(request):
                                             lotacao = ldap_attrs['l'][0]
 
                                             if str(lotacao).upper() in admin_groups:
-                                                message = 'Mensagem: {}\n\nMensagem detalhada: {}'.format(message, detailed_message)
+                                                mail_message = 'Mensagem: {}\n\nMensagem detalhada: {}'.format(message, detailed_message)
                                             else:
-                                                message = 'Mensagem: {}'.format(message)
+                                                mail_message = 'Mensagem: {}'.format(message)
 
-                                            send_unique_email(subject='Alerta', message=message, recipient=user.email)
-                                            message = None
+                                            send_unique_email(subject='Alerta', message=mail_message, recipient=user.email)
                                             match = True
                                             break
                                     if match:
@@ -228,9 +227,11 @@ def add_message_view(request):
                 else:
                     message_form = MessageForm()
                     group_form = GroupForm()
-                sidebar_context_groups = _sidebar_groups()
-                sidebar_context_groups.update({'message_form': message_form, 'group_form': group_form})
-                return render(request, 'core/new_message.html', sidebar_context_groups)
+                    sidebar_context_groups = _sidebar_groups()
+                    sidebar_context_groups.update({'message_form': message_form, 'group_form': group_form})
+                    return render(request, 'core/new_message.html', sidebar_context_groups)
+            return render(request, 'core/home.html', {'status_message': 'Não autorizado.'})
+        else:
             return render(request, 'core/home.html', {'status_message': 'Não autorizado.'})
     else:
         return render(request, 'auth_manager/login.html', {'status_message': 'Faça seu login primeiro.'})
