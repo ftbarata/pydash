@@ -7,8 +7,9 @@ from django.contrib.auth.models import Group as UserGroup
 from django.shortcuts import render
 from django.contrib.sessions.models import Session
 from pydash.profiles_manager.models import UserProfile
-from pydash.mail_notifications.send_mail import send_unique_email
+from pydash.mail_notifications.send_mail import send_unique_email, send_mass_email
 from .forms import MessageForm, GroupForm
+
 
 def __get_ldap_user_attrs_as_dict_of_lists(username, attr_list=['l']):
     server = Server(settings.LDAP_SERVER, get_info=ALL)
@@ -175,6 +176,7 @@ def add_message_view(request):
                     message_form = MessageForm(request.POST)
                     group_form = GroupForm(request.POST)
 
+                    raw_mail_messages = []
                     if message_form.is_valid() and group_form.is_valid():
                         message = message_form.cleaned_data['message']
                         detailed_message = message_form.cleaned_data['detailed_message']
@@ -213,12 +215,14 @@ def add_message_view(request):
                                             else:
                                                 mail_message = 'Mensagem: {}'.format(message)
 
-                                            send_unique_email(subject='Alerta', message=mail_message, recipient=user.email)
+                                            # send_unique_email(subject='Alerta', message=mail_message, recipient=user.email)
+                                            raw_mail_messages.append(('Alerta', mail_message, user.email))
                                             match = True
                                             break
                                     if match:
                                         break
-
+                    if len(raw_mail_messages) > 0:
+                        send_mass_email(raw_mail_messages)
                     message_form = MessageForm()
                     group_form = GroupForm()
                     sidebar_context_groups = _sidebar_groups()
@@ -259,6 +263,7 @@ def delete_message_view(request, id):
                     for u in UserProfile.objects.get(username=user_from_session_id).notification_groups.all():
                         user_notifications_subscribed_groups.append(str(u).upper())
 
+                    raw_mail_messages = []
                     for user in UserProfile.objects.all():
                         if user.notification_groups.all().exists():
                             match = False
@@ -269,16 +274,19 @@ def delete_message_view(request, id):
                                         lotacao = ldap_attrs['l'][0]
 
                                         if str(lotacao).upper() in admin_groups:
-                                            message = 'Mensagem: {}\n\nMensagem detalhada: {}'.format(Message.objects.get(pk=id).message, Message.objects.get(pk=id).detailed_message)
+                                            mail_message = 'Mensagem: {}\n\nMensagem detalhada: {}'.format(Message.objects.get(pk=id).message, Message.objects.get(pk=id).detailed_message)
                                         else:
-                                            message = 'Mensagem: {}'.format(Message.objects.get(pk=id).message)
+                                            mail_message = 'Mensagem: {}'.format(Message.objects.get(pk=id).message)
 
-                                        send_unique_email(subject='Resolvido', message=message, recipient=user.email, solved=True)
-                                        message = None
+                                        # send_unique_email(subject='Resolvido', message=mail_message, recipient=user.email, solved=True)
+                                        raw_mail_messages.append(('Resolvido', mail_message, user.email))
                                         match = True
                                         break
                                 if match:
                                     break
+
+                    if len(raw_mail_messages) > 0:
+                        send_mass_email(raw_mail_messages, solved=True)
 
                     Message.objects.all().get(pk=id).delete()
                     context = _show_messages(10)

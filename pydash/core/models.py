@@ -14,6 +14,9 @@ class Message(models.Model):
         verbose_name = 'mensagem'
         verbose_name_plural = 'mensagens'
 
+    def __str__(self):
+        return self.message
+
 
 class Group(models.Model):
     name = models.CharField('Grupos', max_length=50, unique=True)
