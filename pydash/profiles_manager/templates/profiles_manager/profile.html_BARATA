@@ -18,13 +18,13 @@
                     <img class="userAvatar" src="{{ form.instance.photo.url }}" height="120">
                 {% endif %}
             {% endif %}
-            <label class="biosLabel" for="id_username">{{form.username.label}}</label>
+            <label for="id_username">{{form.username.label}}</label>
             <p>{{ form.username }}</p>
-            <label class="biosLabel" for="id_lotacao">{{form.lotacao.label}}</label>
+            <label for="id_lotacao">{{form.lotacao.label}}</label>
             <p>{{ form.lotacao }}</p>
-            <label class="biosLabel" for="id_email">{{form.email.label}}</label>
+            <label for="id_email">{{form.email.label}}</label>
             <p>{{ form.email }}</p>
-            <label class="biosLabel" for="id_phone">{{form.phone.label}}</label>
+            <label for="id_phone">{{form.phone.label}}</label>
             <p>{{ form.phone }}</p>
 
             {% if user.is_authenticated and request.session.can_edit_profile %}
@@ -34,12 +34,13 @@
                 <p>{{ form.notification_groups }} </p>
                 <p><input type="submit" value="Atualizar" /></p>
             {% else %}
-	    <p>Descricao</p>
-	    <p id="id_description">{{ form.description.value }}</p>
-            <p>{{ form.notification_groups.label }}</p>
+                <p><input type="textarea" value="{{ form.description.value }}" readonly>{{form.description.label}}</p>
                 {% for i in form.notification_groups %}
-                        {{i}} <br>
+                    <ul>
+                        {{i}}
+                    </ul>
                 {% endfor %}
+            {{ form.notification_groups.label }}
             {{ is_admin }}
             {% endif %}
         </form>

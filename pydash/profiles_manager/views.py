@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.contrib.auth.models import Group as UserGroup
 import os
 from django.conf import settings
 from django.shortcuts import render

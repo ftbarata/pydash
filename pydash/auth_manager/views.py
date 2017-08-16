@@ -1,21 +1,12 @@
-from pydash.core.views import _sidebar_groups, _show_messages
+from pydash.core.views import _show_messages
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group as UserGroup
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
-from ldap3 import Server, Connection, ALL
 from django.conf import settings
 from pydash.profiles_manager.models import UserProfile
 from pydash.profiles_manager.forms import ProfileForm
-
-
-def _get_ldap_user_attrs_as_dict_of_lists(username, attr_list=['l']):
-    server = Server(settings.LDAP_SERVER, get_info=ALL)
-    conn = Connection(server, auto_bind=True)
-    conn.search(settings.LDAP_SEARCH_BASE, '(uid={})'.format(username), attributes=attr_list)
-    for dict_item_list in conn.response:
-        if 'attributes' in dict_item_list.keys():
-            return dict_item_list['attributes']
+from .helper_functions import _get_ldap_user_attrs_as_dict_of_lists
 
 
 def login_user(request):
@@ -75,6 +66,7 @@ def login_user(request):
         return render(request, 'core/home.html', context)
     else:
         return render(request, 'auth_manager/login.html')
+
 
 def logout_user(request):
     logout(request)

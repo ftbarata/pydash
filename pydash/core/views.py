@@ -1,4 +1,3 @@
-from ldap3 import Server, Connection, ALL
 from django.conf import settings
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -7,17 +6,10 @@ from django.contrib.auth.models import Group as UserGroup
 from django.shortcuts import render
 from django.contrib.sessions.models import Session
 from pydash.profiles_manager.models import UserProfile
-from pydash.mail_notifications.send_mail import send_unique_email, send_mass_email
+from pydash.mail_notifications.send_mail import send_mass_email
 from .forms import MessageForm, GroupForm
-
-
-def __get_ldap_user_attrs_as_dict_of_lists(username, attr_list=['l']):
-    server = Server(settings.LDAP_SERVER, get_info=ALL)
-    conn = Connection(server, auto_bind=True)
-    conn.search(settings.LDAP_SEARCH_BASE, '(uid={})'.format(username), attributes=attr_list)
-    for dict_item_list in conn.response:
-        if 'attributes' in dict_item_list.keys():
-            return dict_item_list['attributes']
+from pydash.profiles_manager.forms import ProfileForm
+from pydash.auth_manager.helper_functions import _get_ldap_user_attrs_as_dict_of_lists, _get_ldap_username_from_cn
 
 
 def _sidebar_groups():
@@ -130,11 +122,39 @@ def _show_messages(limit=0, group=''):
                 header_class = 'messageheader'
 
             header = author + ', Criado em: ' + str(created_at)
+
             if User.objects.all().filter(first_name=author).exists():
                 username = User.objects.get(first_name=author).last_name
+                ldap_attrs = _get_ldap_user_attrs_as_dict_of_lists(username, ['telephoneNumber', 'l', 'mail'])
+                if ldap_attrs is None:
+                    mail = 'usuário_removido'
+                    phone = 'usuário_removido'
+                    lotacao = 'usuário_removido'
+                else:
+                    mail = ldap_attrs['mail'][0]
+                    if ldap_attrs['telephoneNumber']:
+                        phone = ldap_attrs['telephoneNumber'][0]
+                    else:
+                        phone = 'Não disponível'
+                    lotacao = ldap_attrs['l'][0]
+
+                if UserProfile.objects.filter(username=username).exists():
+                    form = ProfileForm(instance=UserProfile.objects.get(username=username))
+                else:
+                    new_profile = UserProfile(username=username, email=mail, lotacao=lotacao, phone=phone,description='',photo=settings.UPLOAD_TO_PROFILE_MODEL_IMAGE_FIELD_NAME + '/' + settings.DEFAULT_IMAGE_FILENAME)
+                    new_profile.save()
+                    form = ProfileForm(instance=UserProfile.objects.get(username=username))
+
             else:
-                username = 'Usuário removido'
-            messages_context.append({'id': id, 'message': message.message, 'detailed_message': message.detailed_message, 'header_class': header_class, 'header': header, 'username': username})
+                username = _get_ldap_username_from_cn(author)
+                if UserProfile.objects.filter(username='Usuário removido').exists():
+                    form = ProfileForm(instance=UserProfile.objects.get(username='Usuário removido'))
+                else:
+                    new_profile = UserProfile(username='Usuário removido', email='Não disponível', lotacao='Não disponível', phone='Não disponível',description='', photo=settings.UPLOAD_TO_PROFILE_MODEL_IMAGE_FIELD_NAME + '/' + settings.DEFAULT_IMAGE_FILENAME)
+                    new_profile.save()
+                    form = ProfileForm(instance=UserProfile.objects.get(username='Usuário removido'))
+
+            messages_context.append({'id': id, 'message': message.message, 'detailed_message': message.detailed_message,'header_class': header_class, 'header': header, 'username': username, 'form_instance': form})
     context['items'] = messages_context
     return context
 
@@ -207,7 +227,7 @@ def add_message_view(request):
                                 for x in notification_groups_for_this_message:
                                     for y in user_notifications_subscribed_groups:
                                         if x == y:
-                                            ldap_attrs = __get_ldap_user_attrs_as_dict_of_lists(user.username, ['l'])
+                                            ldap_attrs = _get_ldap_user_attrs_as_dict_of_lists(user.username, ['l'])
                                             lotacao = ldap_attrs['l'][0]
 
                                             if str(lotacao).upper() in admin_groups:
@@ -270,7 +290,7 @@ def delete_message_view(request, id):
                             for x in notification_groups_for_this_message:
                                 for y in user_notifications_subscribed_groups:
                                     if x == y:
-                                        ldap_attrs = __get_ldap_user_attrs_as_dict_of_lists(user.username, ['l'])
+                                        ldap_attrs = _get_ldap_user_attrs_as_dict_of_lists(user.username, ['l'])
                                         lotacao = ldap_attrs['l'][0]
 
                                         if str(lotacao).upper() in admin_groups:
