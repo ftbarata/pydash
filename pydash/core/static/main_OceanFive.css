@@ -32,8 +32,10 @@ body{
 	background: #e7e7e7;
 	/* background-color:#FAFAFA; */
 	font-size:15px;
+	/*
 	overflow-y: hidden;
 	overflow-x: hidden;
+	*/
 }
 
 a {
@@ -83,32 +85,43 @@ p.msgOrientacao, p.msgErro{
 	background-position:2px 10px;
 
 }
-	
-div.messageheader {
+
+div.msgHDR{
 	padding:5px 5px;
 	margin:0px;
-	background-color:#00A0B0;
-	color:#FFFFFF;
 	font-size:14px;
 	text-align: right;
+	vertical-align:middle;
+}
+	
+div.messageheader {
+/*
+	background-color:#00A0B0;
+	color:#FFFFFF;
+	*/
+	background-color: #fff;
+	border-bottom: 5px solid #00a0b0;
+	color: #232323;
 }
 
 div.messageheaderAlert {
-	padding:5px 5px;
-	margin:0px;
+/*
 	background-color:#CC333F;
 	color:#FFFFFF;
-	font-size:14px;
-	text-align: right;
+	*/
+	background-color: #fff;
+	border-bottom: 5px solid #CC333F;
+	color: #232323;
 }
 
 div.messageheaderFail {
-	padding:5px 5px;
-	margin:0px;
+	/*
 	background-color:#EB6841;
 	color:#FFFFFF;
-	font-size:14px;
-	text-align: right;
+	*/
+	background-color: #fff;
+	border-bottom: 5px solid #EB6841;
+	color: #232323;
 }
 
 .messagetext {
@@ -153,7 +166,7 @@ div.messagebox {
 	float: left !important;
 	/*background-color:#01579b;*/
 	background-color: #4c4c4c;
-	transition: 0.5s;
+	/*transition: 0.5s;*/
 	/*background-color: #fff;*/
 	/*padding-left: 1%;*/
 }
@@ -168,14 +181,8 @@ div.messagebox {
 }
 
 #newStatusMessages{
-	float: left!important;
-	margin-top: 40px;
-	margin-right: 30%;
-	/*
-	background-color: #fff;
-	width: 500px;
-	padding-left: 1%;
-	*/
+	max-width: 600px;
+	margin: 0 auto;
 }
 
 
@@ -228,7 +235,10 @@ button{
 	-moz-box-shadow: 2px 3px 2px 0px rgba(71,71,71,0.5);
 	box-shadow: 2px 3px 2px 0px rgba(71,71,71,0.5);
 	opacity: 0.8;
-	transition: 0.5s ease all;
+	/*transition: 0.5s ease all;
+	transition-property: opacity, border-color, border-width;
+	transition-duration: 0.5s;
+	*/
 }
 
 button.subButtonOK{
@@ -249,9 +259,11 @@ button:hover, button:active {
     border-width: 0px 0px 4px 0px;
 }
 
+/*
 .groupSubmit {
 	margin: auto;
 }
+*/
 
 
 label.textLabel {
@@ -352,7 +364,11 @@ ul li {
 	box-shadow: 2px 3px 2px 0px rgba(71,71,71,0.5);
 	opacity: 0.8;
 	font-family: "Yanone Kaffeesatz";
+	/*
 	transition: 0.5s ease all;
+	*/
+	transition-property: opacity, border-color, border-width;
+	transition-duration: 0.5s;
 }
 
 ul li:hover, li:active {
@@ -452,7 +468,9 @@ option:hover{
 	box-shadow: 2px 3px 2px 0px rgba(71,71,71,0.5);
 	opacity: 0.8;
 	font-family: "Yanone Kaffeesatz";
-	transition: 0.5s ease all;
+	/*transition: 0.5s ease all;*/
+	transition-property: opacity;
+	transition-duration: 0.5s;
 
 }
 
@@ -485,13 +503,114 @@ option:hover{
 .delButton{
 	float:left;
 	text-decoration: underline;
+    color: #232323;
 }
 
 .userAvatar {
 	width: 120px;
+        box-shadow: 2px 3px 2px 0 rgba(71, 71, 71, 0.5);
 	max-height: 120px;
-	border-radius: 60px;
+	border-radius: 50%;
+	object-fit: cover;
+	margin-right: 240px;
+        background-color: #ffffff;
 }
+
+.userAvatarMini {
+    border-radius: 50%;
+    box-shadow: 2px 3px 2px 0 rgba(71, 71, 71, 0.5);
+    height: 35px;
+    width: 35px;
+    /*left: 0px;
+    position: relative;
+*/
+    margin: 4px 4px -4px 4px;
+    object-fit: cover;
+    top: 0px;
+    background-color: #ffffff;
+}
+.profileLink{
+    display: inline-block;
+    margin: 4px 4px 4px 4px;
+    color: #232323;
+}
+#id_lotacao {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #e7e7e7;
+    border-color: -moz-use-text-color -moz-use-text-color #4c4c4c;
+    border-image: none;
+    border-style: none none solid;
+    border-width: medium medium 1px;
+    color: #222;
+    width: 100%;
+}
+#id_username {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #e7e7e7;
+    border-color: -moz-use-text-color -moz-use-text-color #4c4c4c;
+    border-image: none;
+    border-style: none none solid;
+    border-width: medium medium 1px;
+    color: #222;
+    width: 100%;
+}
+#id_email {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #e7e7e7;
+    border-color: -moz-use-text-color -moz-use-text-color #4c4c4c;
+    border-image: none;
+    border-style: none none solid;
+    border-width: medium medium 1px;
+    color: #222;
+    width: 100%;
+}
+#id_phone {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #e7e7e7;
+    border-color: -moz-use-text-color -moz-use-text-color #4c4c4c;
+    border-image: none;
+    border-style: none none solid;
+    border-width: medium medium 1px;
+    color: #222;
+    width: 100%;
+}
+#id_description {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #e7e7e7;
+    border-color: -moz-use-text-color -moz-use-text-color #4c4c4c;
+    border-image: none;
+    border-style: none none solid;
+    border-width: medium medium 1px;
+    color: #222;
+    width: 100%;
+}
+.biosLabel {
+    left: 0;
+    position: relative;
+}
+
+.djangoMessage {
+    background-color: #00a0b0;
+    border-radius: 3px;
+    color: #fff;
+    padding: 4px;
+}
+
 
 @media only screen and (max-width: 768px) {
 

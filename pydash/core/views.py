@@ -121,7 +121,7 @@ def _show_messages(limit=0, group=''):
             else:
                 header_class = 'messageheader'
 
-            header = author + ', Criado em: ' + str(created_at)
+            header = str(created_at)
 
             if User.objects.all().filter(first_name=author).exists():
                 username = User.objects.get(first_name=author).last_name
@@ -154,7 +154,7 @@ def _show_messages(limit=0, group=''):
                     new_profile.save()
                     form = ProfileForm(instance=UserProfile.objects.get(username='Usuário removido'))
 
-            messages_context.append({'id': id, 'message': message.message, 'detailed_message': message.detailed_message,'header_class': header_class, 'header': header, 'username': username, 'form_instance': form})
+            messages_context.append({'id': id, 'message': message.message, 'detailed_message': message.detailed_message,'header_class': header_class, 'header': header, 'username': username, 'form_instance': form, 'author': author})
     context['items'] = messages_context
     return context
 
@@ -325,7 +325,10 @@ def add_group_view(request):
             if request.session['is_admin']:
                 if request.method == 'POST':
                     group_name = request.POST['group_name']
-                    Group.objects.create(name=group_name.replace('.', ''))
+                    capitalized_group_name = ''
+                    for word in group_name.split():
+                        capitalized_group_name += word.capitalize() + ' '
+                    Group.objects.create(name=capitalized_group_name[:-1].replace('.', ''))
                     sidebar_context_groups = _sidebar_groups()
                     sidebar_context_groups.update({'group_created_message': 'Grupo {} criado.'.format(group_name)})
                     return render(request, 'core/new_group.html', sidebar_context_groups)

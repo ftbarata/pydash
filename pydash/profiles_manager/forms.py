@@ -15,5 +15,16 @@ class ProfileForm(models.ModelForm):
             'email': forms.TextInput(attrs={'readonly': 'readonly', 'size': '50'}),
             'phone': forms.TextInput(attrs={'readonly': 'readonly'}),
             'description': forms.Textarea(),
-            'notification_groups': forms.CheckboxSelectMultiple()
+            'notification_groups': forms.CheckboxSelectMultiple(),
+        }
+
+
+class ProfileFormReadOnly(models.ModelForm):
+
+    class Meta:
+
+        model = UserProfile
+        fields = ['notification_groups']
+        widgets={
+            'notification_groups': forms.Textarea()
         }

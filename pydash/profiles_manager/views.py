@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 import os
 from django.conf import settings
 from django.shortcuts import render
-from .forms import ProfileForm
+from .forms import ProfileForm,ProfileFormReadOnly
 from .models import UserProfile
 from pydash.auth_manager.views import _get_ldap_user_attrs_as_dict_of_lists
 from django.contrib.sessions.models import Session
@@ -47,6 +47,10 @@ def profile_view(request, username=''):
         new_profile = UserProfile(username=username, email=mail, lotacao=lotacao, phone=phone, description='', photo=settings.UPLOAD_TO_PROFILE_MODEL_IMAGE_FIELD_NAME + '/' + settings.DEFAULT_IMAGE_FILENAME)
         new_profile.save()
         form = ProfileForm(instance=UserProfile.objects.get(username=username))
+
+    notification_groups_readonly = []
+    for i in UserProfile.objects.get(username=username).notification_groups.all():
+        notification_groups_readonly.append(i)
 
     if request.method == 'POST':
         if request.user.is_authenticated:
@@ -97,4 +101,4 @@ def profile_view(request, username=''):
         else:
             return render(request, 'profiles_manager/profile.html', {'status_message': 'Permissão negada. Você não está autenticado.', 'form': form, 'errors': form.errors})
     else:
-        return render(request, 'profiles_manager/profile.html', {'form': form, 'can_edit_profile': request.session['can_edit_profile']})
+        return render(request, 'profiles_manager/profile.html', {'notification_groups_readonly': notification_groups_readonly, 'form': form, 'can_edit_profile': request.session['can_edit_profile']})

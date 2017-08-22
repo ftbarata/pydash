@@ -89,7 +89,11 @@
 
 
             <div id="StatusMessages" >
-                <span class="djangoMessage">{{ status_message }}</span>
+                {% if status_message %}
+                    <span class="djangoMessage">{{ status_message }}</span>
+                {% endif %}
+
+
                 {% block statusmessages %}
 
                 {% endblock %}
