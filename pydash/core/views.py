@@ -328,10 +328,15 @@ def add_group_view(request):
                     capitalized_group_name = ''
                     for word in group_name.split():
                         capitalized_group_name += word.capitalize() + ' '
-                    Group.objects.create(name=capitalized_group_name[:-1].replace('.', ''))
-                    sidebar_context_groups = _sidebar_groups()
-                    sidebar_context_groups.update({'group_created_message': 'Grupo {} criado.'.format(group_name)})
-                    return render(request, 'core/new_group.html', sidebar_context_groups)
+                    if Group.objects.all().filter(name__iexact=capitalized_group_name[:-1].replace('.', '')).exists():
+                        sidebar_context_groups = _sidebar_groups()
+                        sidebar_context_groups.update({'group_created_message': 'Grupo {} já existe.'.format(capitalized_group_name)})
+                        return render(request, 'core/new_group.html', sidebar_context_groups)
+                    else:
+                        Group.objects.create(name=capitalized_group_name[:-1].replace('.', ''))
+                        sidebar_context_groups = _sidebar_groups()
+                        sidebar_context_groups.update({'group_created_message': 'Grupo {} criado.'.format(group_name)})
+                        return render(request, 'core/new_group.html', sidebar_context_groups)
                 else:
                     sidebar_context_groups = _sidebar_groups()
                     return render(request, 'core/new_group.html', sidebar_context_groups)
