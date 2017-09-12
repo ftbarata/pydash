@@ -231,9 +231,9 @@ def add_message_view(request):
                                             lotacao = ldap_attrs['l'][0]
 
                                             if str(lotacao).upper() in admin_groups:
-                                                mail_message = 'Mensagem: {}\n\nMensagem detalhada: {}'.format(message, detailed_message)
+                                                mail_message = 'Mensagem: {}\n\nMensagem detalhada: {}\n\nCadastrado por: {}'.format(message, detailed_message, fullname)
                                             else:
-                                                mail_message = 'Mensagem: {}'.format(message)
+                                                mail_message = 'Mensagem: {}\n\nCadastrado por: {}'.format(message, fullname)
 
                                             # send_unique_email(subject='Alerta', message=mail_message, recipient=user.email)
                                             raw_mail_messages.append(('Alerta', mail_message, user.email))
@@ -271,6 +271,7 @@ def delete_message_view(request, id):
                     session = Session.objects.get(session_key=session_id)
                     uid = session.get_decoded().get('_auth_user_id')
                     user_from_session_id = User.objects.get(pk=uid)
+                    fullname = User.objects.get(username=user_from_session_id).get_short_name()
                     admin_groups = []
                     for g in UserGroup.objects.all():
                         admin_groups.append(str(g).upper())
@@ -294,9 +295,9 @@ def delete_message_view(request, id):
                                         lotacao = ldap_attrs['l'][0]
 
                                         if str(lotacao).upper() in admin_groups:
-                                            mail_message = 'Mensagem: {}\n\nMensagem detalhada: {}'.format(Message.objects.get(pk=id).message, Message.objects.get(pk=id).detailed_message)
+                                            mail_message = 'Mensagem: {}\n\nMensagem detalhada: {}\n\nRemovido por: {}'.format(Message.objects.get(pk=id).message, Message.objects.get(pk=id).detailed_message, fullname)
                                         else:
-                                            mail_message = 'Mensagem: {}'.format(Message.objects.get(pk=id).message)
+                                            mail_message = 'Mensagem: {}\n\nRemovido por:'.format(Message.objects.get(pk=id).message, fullname)
 
                                         # send_unique_email(subject='Resolvido', message=mail_message, recipient=user.email, solved=True)
                                         raw_mail_messages.append(('Resolvido', mail_message, user.email))
