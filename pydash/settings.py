@@ -120,8 +120,8 @@ PROFILE_IMAGES_DIR_PATH = MEDIA_ROOT + '/' + UPLOAD_TO_PROFILE_MODEL_IMAGE_FIELD
 DEFAULT_IMAGE_FILENAME = 'default.jpg'
 
 # ldap3
-LDAP_SERVER = 'ldap.conab.gov.br'
-LDAP_SEARCH_BASE = 'ou=usuarios,dc=matriz,dc=conab,dc=gov,dc=br'
+LDAP_SERVER = 'ldap.com'
+LDAP_SEARCH_BASE = 'ou=usuarios,dc=matriz,dc=teste,dc=com,dc=br'
 
 # DJANGO-PYTHON3-LDAP
 LDAP_AUTH_URL = "ldap://ldap.example.com.br:389"
